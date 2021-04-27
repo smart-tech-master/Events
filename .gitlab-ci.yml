@@ -1,0 +1,83 @@
+image: node:12.18.2
+
+cache:
+  key: event_web
+  paths:
+    - .npm/
+
+variables:
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  STAGING_CDN_DISTRIBUTION_ID: E1PN7CUQQZ69AV
+  PROD_CDN_DISTRIBUTION_ID: EOHRS0Q0OCXKQ
+
+stages:
+  - test
+  - build
+  - deploy
+
+unit_tests:
+  stage: test
+  except:
+    refs:
+      - staging
+      - production
+  artifacts:
+    paths:
+      - coverage
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm run test:coverage
+
+build_staging:
+  stage: build
+  only:
+    refs:
+      - staging
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm run build
+  variables:
+    REACT_APP_API_URL: 'https://v1-staging.obv.io'
+    REACT_APP_WEB_APP_ROOT: 'staging.obv.io'
+    REACT_APP_IS_STAGING: 'true'
+  artifacts:
+    paths:
+      - build/
+
+deploy_staging:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - staging
+  script:
+    - aws s3 sync build/ s3://obvio-event-web-staging
+    - aws cloudfront create-invalidation --distribution-id
+      $STAGING_CDN_DISTRIBUTION_ID --paths "/*"
+
+build_prod:
+  stage: build
+  only:
+    refs:
+      - production
+  script:
+    - npm i --cache .npm --prefer-offline
+    - npm run build
+  variables:
+    REACT_APP_API_URL: https://v1.obv.io
+    REACT_APP_WEB_APP_ROOT: 'obv.io'
+  artifacts:
+    paths:
+      - build/
+
+deploy_prod:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  stage: deploy
+  only:
+    refs:
+      - production
+  script:
+    - aws s3 sync build/ s3://obvio-event-web
+    - aws cloudfront create-invalidation --distribution-id
+      $PROD_CDN_DISTRIBUTION_ID --paths "/*"

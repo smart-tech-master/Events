@@ -1,0 +1,120 @@
+{
+  "name": "event-web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^23.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@date-io/moment": "^1.3.13",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/pickers": "^3.2.10",
+    "axios": "^0.21.0",
+    "color": "^3.1.2",
+    "cross-env": "^7.0.3",
+    "js-file-download": "^0.4.12",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.31",
+    "normalize.css": "^8.0.1",
+    "ramda": "^0.27.1",
+    "react": "^16.13.1",
+    "react-color": "^2.18.1",
+    "react-dom": "^16.13.1",
+    "react-dropzone": "^11.2.4",
+    "react-hook-form": "^6.11.0",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.0",
+    "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
+    "rxjs": "^6.6.3",
+    "signature_pad": "^3.0.0-beta.4",
+    "styled-components": "^5.2.0",
+    "throttle-debounce": "^3.0.1",
+    "typescript": "~3.8.0",
+    "uuid": "^8.3.0"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "cross-env CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test:watch": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test:coverage": "npm run test -- --coverage",
+    "test:related": "npm run test -- --passWithNoTests --findRelatedTests",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|ts|tsx|json)\"",
+    "format": "npm run prettier -- --write",
+    "check-format": "npm run prettier -- --list-different",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
+    "check-types": "tsc",
+    "validate": "npm run format && npm-run-all --parallel check-types check-format lint test build",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run check-types && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|ts|tsx)": [
+      "eslint"
+    ],
+    "**/*.+(js|jsx|ts|tsx|json)": [
+      "prettier --write",
+      "npm run test:related"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!**/__utils__/**",
+      "!**/src/index.tsx",
+      "!**/serviceWorker.ts",
+      "!**/react-app-env.d.ts"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/axios": "^0.14.0",
+    "@types/color": "^3.0.1",
+    "@types/css-mediaquery": "^0.1.0",
+    "@types/faker": "^4.1.12",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/ramda": "^0.27.14",
+    "@types/react": "^16.9.0",
+    "@types/react-color": "^3.0.4",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.6",
+    "@types/styled-components": "^5.1.3",
+    "@types/throttle-debounce": "^2.1.0",
+    "@types/uuid": "^8.3.0",
+    "css-mediaquery": "^0.1.2",
+    "faker": "^5.1.0",
+    "husky": "^4.2.5",
+    "jest-canvas-mock": "^2.3.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "lint-staged": "^10.2.13",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.1.1",
+    "redux-devtools": "^3.7.0"
+  }
+}
